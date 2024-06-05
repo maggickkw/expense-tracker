@@ -7,7 +7,13 @@ const AllExpenses = () => {
   const expensesCtx = useContext(ExpensesContext);
 
   const expenses = expensesCtx.expenses || [];
-  return <ExpensesOutput expenses={expenses} expensesPeriod="Total" fallbackText="No expenses found" />;
+  return (
+    <ExpensesOutput
+      expenses={expenses}
+      expensesPeriod="Total"
+      fallbackText="No expenses found"
+    />
+  );
 };
 
 export default AllExpenses;

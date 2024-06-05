@@ -3,6 +3,7 @@ import { expenseItem as ExpenseItemType } from "../../data/types";
 import { GlobalStyles } from "../../constants/styles";
 import { useNavigation, NavigationProp } from "@react-navigation/native";
 import { RootStackParamList } from "../../App";
+import { getFormattedDate } from "../../util";
 
 const ExpenseItem: React.FC<ExpenseItemType> = ({
   description,
@@ -25,7 +26,7 @@ const navigation = useNavigation<NavigationProp<RootStackParamList>>();
       <View style={styles.expenseItem}>
         <View>
           <Text style={[styles.textBase, styles.description]}>{description}</Text>
-          <Text style={styles.textBase}>{new Date(date).toLocaleDateString()}</Text>
+          <Text style={styles.textBase}>{getFormattedDate(date)}</Text>
         </View>
         <View style={styles.amountContainer}>
           <Text style={styles.amount}>{amount}</Text>
