@@ -21,7 +21,7 @@ const Input = ({
   style?: StyleProp<ViewStyle>;
   invalid?: Boolean;
 }) => {
-  const inputStyles = [styles?.input];
+  const inputStyles: any[] = [styles?.input];
 
   if (textInputConfig && textInputConfig.multiline) {
     inputStyles.push(styles.inputMultiline);
@@ -31,10 +31,12 @@ const Input = ({
     inputStyles.push(styles.invalidInput);
   }
 
+  // console.log('Input Style:', JSON.stringify(inputStyles,null, 3))
+
   return (
     <View style={[styles.inputContainer, style]}>
       <Text style={styles.label}>{label}</Text>
-      <TextInput {...textInputConfig} style={ inputStyles} />
+      <TextInput {...textInputConfig} style={inputStyles} />
     </View>
   );
 };
