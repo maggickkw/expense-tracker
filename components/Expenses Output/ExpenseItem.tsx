@@ -17,7 +17,7 @@ const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
   const handleNavigation = () => {
     navigation.navigate('ManageExpense',
-      {expenseId: Number(id)}
+      {expenseId: id}
     );
   }
 
