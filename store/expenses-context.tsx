@@ -7,14 +7,16 @@ const MIN_ID = 10000; // Minimum 5-digit number
 const MAX_ID = 99999;
 
 type ActionType =
-  | { type: 'ADD'; payload: ExpenseData }
-  | { type: 'UPDATE'; payload: { id: number; data: ExpenseData } }
+  | { type: 'ADD'; payload: expenseItem }
+  | { type: 'SET'; payload: expenseItem[] }
+  | { type: 'UPDATE'; payload: { id: number | string; data: ExpenseData } }
   | { type: 'DELETE'; payload: number };
 
 
 interface ExpensesContextType {
   expenses: expenseItem[];
-  addExpense: (expenseData: ExpenseData) => void;
+  addExpense: (expenseData: expenseItem) => void;
+  setExpenses: (expenses: expenseItem[]) => void;
   deleteExpense: (id: number) => void;
   updateExpense: (id: number, expenseData: ExpenseData) => void;
 }
@@ -22,6 +24,7 @@ interface ExpensesContextType {
 export const ExpensesContext = createContext<ExpensesContextType>({
   expenses: [],
   addExpense: () => {},
+  setExpenses: () => {},
   deleteExpense: () => {},
   updateExpense: () => {},
 });
@@ -29,8 +32,9 @@ export const ExpensesContext = createContext<ExpensesContextType>({
 function expensesReducer(state: expenseItem[], action: ActionType): expenseItem[] {
   switch (action.type) {
     case "ADD":
-      const id = generateRandomNumericId(MIN_ID, MAX_ID)
-      return [{ ...action.payload, id: id }, ...state];
+      return [action.payload, ...state];
+    case "SET":
+      return action.payload.reverse();
     case "UPDATE":
       const updatableIndex = state.findIndex(
         (expense) => expense.id === action.payload.id
@@ -48,10 +52,14 @@ function expensesReducer(state: expenseItem[], action: ActionType): expenseItem[
 }
 
 function ExpensesContextProvider({ children }: {children: React.ReactNode}) {
-  const [expensesState, dispatch] = useReducer(expensesReducer, dummyExpenses);
+  const [expensesState, dispatch] = useReducer(expensesReducer, []);
 
-  function addExpense(expenseData: ExpenseData) {
+  function addExpense(expenseData: expenseItem) {
     dispatch({ type: "ADD", payload: expenseData });
+  }
+
+  function setExpenses(expenses: expenseItem[]) {
+    dispatch({ type: "SET", payload: expenses });
   }
 
   function deleteExpense(id: number) {
@@ -65,6 +73,7 @@ function ExpensesContextProvider({ children }: {children: React.ReactNode}) {
   const value: ExpensesContextType = {
     expenses: expensesState,
     addExpense,
+    setExpenses,
     deleteExpense,
     updateExpense
   }
