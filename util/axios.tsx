@@ -1,7 +1,6 @@
 import axios from "axios";
 import { ExpenseData, expenseItem } from "../data/types";
 
-const URL = "https://react-native-demo-d215c-default-rtdb.firebaseio.com";
 
 export async function storeExpense(expenseData: ExpenseData) {
   const response = await axios.post(URL + "/expenses.json", expenseData);
